@@ -102,6 +102,7 @@ class _HistoryPageState extends State<HistoryPage> {
                             child: ImageHelper(
                               image: imageUrls[index],
                               imageType: ImageType.network,
+                              imageShape: ImageShape.circle,
                             ),
                           )),
                       Expanded(
@@ -110,7 +111,7 @@ class _HistoryPageState extends State<HistoryPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(left: 38.0),
+                                padding: const EdgeInsets.only(left: 90.0),
                                 child: Text(
                                   '${index + 10} ₹',
                                   style: GoogleFonts.poppins(

@@ -1,7 +1,6 @@
 import 'package:algoocean/Features/Home/data/model/HomeModal.dart';
 import 'package:algoocean/Features/Home/presentation/bloc/home_bloc.dart';
 import 'package:algoocean/Global/colors.dart';
-import 'package:algoocean/Screens/CartPage.dart';
 import 'package:algoocean/Screens/Historypage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -64,7 +63,7 @@ class _HomepageState extends State<Homepage> {
           backgroundColor: PRIMARY,
           centerTitle: true,
           title: Text(
-            'Algo-ocean',
+            'Algoocean',
             style: GoogleFonts.poppins(color: Colors.white, fontSize: 24),
           ),
           actions: [
@@ -138,7 +137,7 @@ class _HomepageState extends State<Homepage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomButton(
-                  title: 'Fetch Data',
+                  title: 'View Dogs',
                   ontap: () {
                     _saveImageLocally(_modal.message ?? '');
                     _dataBloc.add(const HomeData());

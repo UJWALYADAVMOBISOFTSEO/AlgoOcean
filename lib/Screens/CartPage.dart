@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../CommonWidgets/image_helper.dart';
 import '../Global/colors.dart';
@@ -18,6 +18,11 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
+    // Calculate the total price
+    double totalPrice = 0.0;
+    widget.cartItems?.forEach((item) {
+      totalPrice += double.parse(item['price'].toString().replaceAll('₹', ''));
+    });
     return SafeArea(
         child: AnnotatedRegion(
       value: const SystemUiOverlayStyle(
@@ -39,9 +44,9 @@ class _CartPageState extends State<CartPage> {
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 28.0),
+              padding: const EdgeInsets.only(right: 18.0, top: 10),
               child: Text(
-                'Total : ',
+                'Total: ₹$totalPrice',
                 style: GoogleFonts.poppins(color: Colors.white, fontSize: 20),
               ),
             ),
@@ -70,6 +75,7 @@ class _CartPageState extends State<CartPage> {
                             child: ImageHelper(
                               image: imageUrl,
                               imageType: ImageType.network,
+                              imageShape: ImageShape.circle,
                             ),
                           )),
                       Expanded(
@@ -78,42 +84,17 @@ class _CartPageState extends State<CartPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(left: 38.0),
+                                padding: const EdgeInsets.only(left: 100.0),
                                 child: Text(
                                   '$price',
                                   style: GoogleFonts.poppins(
                                       color: PRIMARY, fontSize: 24),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Icon(Icons.pets),
-                                    InkWell(
-                                      onTap: () {},
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: PRIMARY, width: 2),
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0, right: 8.0),
-                                          child: Text(
-                                            'Remove From Cart',
-                                            style: GoogleFonts.poppins(
-                                                color: PRIMARY, fontSize: 16),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              SvgPicture.asset(
+                                'assets/svgImages/dog.svg',
+                                height: 50,
+                                width: 70,
                               ),
                             ],
                           )),
