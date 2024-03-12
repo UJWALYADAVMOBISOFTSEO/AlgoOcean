@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../CommonWidgets/CustomButton.dart';
 import '../../../../CommonWidgets/image_helper.dart';
@@ -22,11 +23,30 @@ class _HomepageState extends State<Homepage> {
   final HomeBloc _dataBloc = HomeBloc();
   HomeModal _modal = HomeModal();
   bool isLoading = false;
+  List<String> imageUrls = []; // List to store image URLs locally
 
   @override
   void initState() {
     _dataBloc.add(const HomeData());
+    _loadImagesLocally(); // Load stored images on initialization
     super.initState();
+  }
+
+  // Load stored images from SharedPreferences
+  Future<void> _loadImagesLocally() async {
+    final prefs = await SharedPreferences.getInstance();
+    final storedImages = prefs.getStringList('imageUrls') ?? [];
+    setState(() {
+      imageUrls = storedImages;
+    });
+  }
+
+  // Save image URL to SharedPreferences
+  Future<void> _saveImageLocally(String imageUrl) async {
+    final prefs = await SharedPreferences.getInstance();
+    imageUrls.remove(imageUrl);
+    imageUrls.add(imageUrl);
+    prefs.setStringList('imageUrls', imageUrls);
   }
 
   @override
@@ -53,8 +73,8 @@ class _HomepageState extends State<Homepage> {
                 color: Colors.white,
               ),
               onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const HistoryPage()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const HistoryPage()));
               },
             ),
             IconButton(
@@ -88,6 +108,7 @@ class _HomepageState extends State<Homepage> {
       hideProgressDialog(context);
       _modal = state.homeModal;
       isLoading = false;
+      _saveImageLocally(_modal.message ?? '');
     }
     if (state is HomeError) {
       hideProgressDialog(context);
@@ -121,18 +142,13 @@ class _HomepageState extends State<Homepage> {
             height: 50,
             width: 400,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomButton(
                   title: 'Fetch Data',
                   ontap: () {
+                    _saveImageLocally(_modal.message ?? '');
                     _dataBloc.add(const HomeData());
-                  },
-                ),
-                CustomButton(
-                  title: 'Add To Cart',
-                  ontap: () {
-                    debugPrint('abc');
                   },
                 ),
               ],

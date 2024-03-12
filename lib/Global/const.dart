@@ -1,2 +1,2 @@
-const kImagePlaceHolderPath = 'assets/images/splashScreenCartImage.png';
+const kImagePlaceHolderPath = 'assets/images/GoogleLogo.png';
 int mainNav = 1;
