@@ -67,16 +67,19 @@ class _HomepageState extends State<Homepage> {
             style: GoogleFonts.poppins(color: Colors.white, fontSize: 24),
           ),
           actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.history,
-                color: Colors.white,
-                size: 28,
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: IconButton(
+                icon: const Icon(
+                  Icons.history,
+                  color: Colors.white,
+                  size: 28,
+                ),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const HistoryPage()));
+                },
               ),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const HistoryPage()));
-              },
             ),
           ],
         ),

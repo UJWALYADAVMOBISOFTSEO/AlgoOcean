@@ -13,6 +13,9 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: ontap,
+      onLongPress: (){
+
+      },
       child: Container(
         height: double.infinity,
         decoration: BoxDecoration(
