@@ -1,6 +1,7 @@
 import 'package:algoocean/Features/Home/data/model/HomeModal.dart';
 import 'package:algoocean/Features/Home/presentation/bloc/home_bloc.dart';
 import 'package:algoocean/Global/colors.dart';
+import 'package:algoocean/Screens/CartPage.dart';
 import 'package:algoocean/Screens/Historypage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -71,19 +72,11 @@ class _HomepageState extends State<Homepage> {
               icon: const Icon(
                 Icons.history,
                 color: Colors.white,
+                size: 28,
               ),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const HistoryPage()));
-              },
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.shopping_cart_outlined,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                debugPrint('cart Button Clicked');
               },
             ),
           ],

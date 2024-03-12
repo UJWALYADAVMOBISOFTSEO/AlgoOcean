@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../CommonWidgets/image_helper.dart';
 import '../Global/colors.dart';
+import 'CartPage.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
@@ -15,6 +18,7 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   List<String> imageUrls = [];
+  List<Map<String, dynamic>> cartItems = [];
 
   @override
   void initState() {
@@ -22,13 +26,37 @@ class _HistoryPageState extends State<HistoryPage> {
     super.initState();
   }
 
-  // Load stored images from SharedPreferences
+  /// Load stored images from SharedPreferences
   Future<void> _loadImagesLocally() async {
     final prefs = await SharedPreferences.getInstance();
     final storedImages = prefs.getStringList('imageUrls') ?? [];
     setState(() {
       imageUrls = storedImages;
     });
+  }
+
+  void addToCart(String imageUrl, String price) {
+    setState(() {
+      cartItems.add({'imageUrl': imageUrl, 'price': price});
+    });
+    saveCartToSharedPreferences();
+
+    // Navigate to CartPage and pass the cartItems data
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CartPage(cartItems: cartItems),
+      ),
+    );
+  }
+
+  void saveCartToSharedPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    List<Map<String, dynamic>> cartItemsMapList = cartItems.map((item) {
+      return {'imageUrl': item['imageUrl'], 'price': item['price']};
+    }).toList();
+    String cartItemsJson = jsonEncode(cartItemsMapList);
+    prefs.setString('cartItems', cartItemsJson);
   }
 
   @override
@@ -93,11 +121,15 @@ class _HistoryPageState extends State<HistoryPage> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     const Icon(Icons.pets),
                                     InkWell(
-                                      onTap: () {},
+                                      onTap: () {
+                                        addToCart(imageUrls[index],
+                                            '${index + 10} ₹');
+                                      },
                                       child: Container(
                                         decoration: BoxDecoration(
                                             border: Border.all(
