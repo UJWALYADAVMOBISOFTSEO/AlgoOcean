@@ -39,7 +39,7 @@ class _CartPageState extends State<CartPage> {
           backgroundColor: PRIMARY,
           centerTitle: true,
           title: Text(
-            'Cart Page',
+            'Cart',
             style: GoogleFonts.poppins(color: Colors.white, fontSize: 24),
           ),
           actions: [
